@@ -1,0 +1,3 @@
+ [workspace]
+members = ["monkey-token"]
+resolver = "2"
