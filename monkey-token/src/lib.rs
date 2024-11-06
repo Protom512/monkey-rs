@@ -38,12 +38,13 @@ pub const ELSE: &str = "ELSE";
 pub const RETURN: &str = "RETURN";
 pub type TokenType = String;
 /// TODO Rustで定数なHashMapの定義の仕方
-/// 
+///
+#[derive(Debug, PartialEq, Eq)]
 pub struct Token {
-    Type: TokenType,
-    Literal: String,
+    pub Type: TokenType,
+    pub Literal: String,
 }
-pub fn LookupIdent(ident: String) -> TokenType {
+pub fn LookupIdent(_ident: String) -> TokenType {
     // if let hogehgoe = tmpkeywords[&ident] {
     //     return hogehgoe.to_string();
     // }

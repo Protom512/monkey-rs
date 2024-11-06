@@ -3,5 +3,12 @@
 version = 3
 
 [[package]]
+name = "monkey-lexer"
+version = "0.1.0"
+dependencies = [
+ "monkey-token",
+]
+
+[[package]]
 name = "monkey-token"
 version = "0.1.0"
