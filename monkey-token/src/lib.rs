@@ -44,9 +44,21 @@ pub struct Token {
     pub Type: TokenType,
     pub Literal: String,
 }
-pub fn LookupIdent(_ident: String) -> TokenType {
-    // if let hogehgoe = tmpkeywords[&ident] {
-    //     return hogehgoe.to_string();
-    // }
-    return IDENT.to_string();
+use std::collections::{btree_map::VacantEntry, HashMap};
+pub fn lookup_ident(ident: &str) -> TokenType {
+    dbg!(ident);
+    let mut map = HashMap::new();
+    map.insert("fn", FUNCTION);
+    map.insert("let", LET);
+    map.insert("true", TRUE);
+    map.insert("false", FALSE);
+    map.insert("if", IF);
+    map.insert("else", ELSE);
+    map.insert("return", RETURN);
+
+    match map.get(ident) {
+        Some(value) => value.to_string(),
+
+        None => IDENT.to_string(),
+    }
 }
