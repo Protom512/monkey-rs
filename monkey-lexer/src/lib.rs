@@ -1,5 +1,5 @@
 use monkey_token::{
-    lookup_ident, Token, TokenType, ASSIGN, COMMA, ILLEGAL, LBRACE, LPAREN, RBRACE, RPAREN,
+    lookup_ident, Token, TokenType, ASSIGN, COMMA, ILLEGAL, INT, LBRACE, LPAREN, RBRACE, RPAREN,
     SEMICOLON,
 };
 #[derive(Debug)]
@@ -50,30 +50,66 @@ impl Lexer {
             Type: "".to_string(),
             Literal: "".to_owned(),
         };
+        self.skip_whitespace();
         let token = match self.ch {
-            '=' => Self::new_token(ASSIGN.to_owned(), self.ch.to_string()),
-            ';' => Self::new_token(SEMICOLON.to_string(), self.ch.to_string()),
-            '(' => Self::new_token(LPAREN.to_string(), self.ch.to_string()),
-            ')' => Self::new_token(RPAREN.to_string(), self.ch.to_string()),
-            ',' => Self::new_token(COMMA.to_string(), self.ch.to_string()),
-            '+' => Self::new_token(monkey_token::PLUS.to_string(), self.ch.to_string()),
-            '{' => Self::new_token(LBRACE.to_string(), self.ch.to_string()),
-            '}' => Self::new_token(RBRACE.to_string(), self.ch.to_string()),
+            '=' => {
+                token = Self::new_token(ASSIGN.to_owned(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            ';' => {
+                token = Self::new_token(SEMICOLON.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '(' => {
+                token = Self::new_token(LPAREN.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            ')' => {
+                token = Self::new_token(RPAREN.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            ',' => {
+                token = Self::new_token(COMMA.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '+' => {
+                token = Self::new_token(monkey_token::PLUS.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '{' => {
+                token = Self::new_token(LBRACE.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '}' => {
+                token = Self::new_token(RBRACE.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
             _ => {
                 dbg!(self.ch);
                 if self.is_letter() {
                     token.Literal = self.read_identifier();
                     token.Type = lookup_ident(&token.Literal);
+                    // ここで一文字進んでいると下でもう1️⃣文字すすんでそ
+                    token
+                } else if self.is_digit() {
+                    token.Type = INT.to_string();
+                    token.Literal = self.read_number();
                     token
                 } else {
                     Self::new_token(ILLEGAL.to_string(), self.ch.to_string())
                 }
-                // token.Literal = String::from("");
-                // token.Type = EOF.to_string();
-                // token
             }
         };
-        self.read_char();
+
+        dbg!(self.position);
         token
     }
     fn new_token(assign: TokenType, ch: String) -> Token {
@@ -82,16 +118,39 @@ impl Lexer {
             Literal: ch,
         };
     }
-    //
+
+    ///
     fn is_letter(&self) -> bool {
-        self.ch.is_alphanumeric() || self.ch == '_'
+        self.ch.is_alphabetic() || self.ch == '_'
     }
     fn read_identifier(&mut self) -> String {
         let start_pos = self.position;
-        while self.ch.is_alphanumeric() || self.ch == '_' {
+        while self.ch.is_alphabetic() || self.ch == '_' {
             self.read_char(); // 次の文字を読み込む
         }
         let identifier = &self.input[start_pos as usize..self.position as usize];
+        dbg!(self.position);
+        identifier.to_string() // 文字列を返す
+    }
+
+    /// スペースであるかぎりスキップする
+    fn skip_whitespace(&mut self) -> () {
+        while self.ch == ' ' || self.ch == '\t' || self.ch == '\n' {
+            self.read_char();
+        }
+    }
+    /// 0-9である限り
+    fn is_digit(&self) -> bool {
+        self.ch.is_numeric()
+    }
+    /// 数字だけを取得
+    fn read_number(&mut self) -> String {
+        let start_pos = self.position;
+        while self.ch.is_numeric() || self.ch == '_' {
+            self.read_char(); // 次の文字を読み込む
+        }
+        let identifier = &self.input[start_pos as usize..self.position as usize];
+        dbg!(self.position);
         identifier.to_string() // 文字列を返す
     }
 }

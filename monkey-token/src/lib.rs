@@ -44,7 +44,7 @@ pub struct Token {
     pub Type: TokenType,
     pub Literal: String,
 }
-use std::collections::{btree_map::VacantEntry, HashMap};
+use std::collections::{HashMap};
 pub fn lookup_ident(ident: &str) -> TokenType {
     dbg!(ident);
     let mut map = HashMap::new();
