@@ -57,7 +57,9 @@ mod tests {
         x+y;
     };
     
-    let result=add(five,ten);";
+    let result=add(five,ten);
+    !-/*5;
+    5<10>5;";
         let mut l = Lexer::new(input.to_string());
         let expecteds: Vec<Token>;
         expecteds = vec![
@@ -202,6 +204,36 @@ mod tests {
                 Type: RPAREN.to_string(),
                 Literal: ")".to_string(),
             },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            //   !-/*5;
+            Token {
+                Type: BANG.to_string(),
+                Literal: "!".to_string(),
+            },
+            Token {
+                Type: MINUS.to_string(),
+                Literal: "-".to_string(),
+            },
+            Token {
+                Type: SLASH.to_string(),
+                Literal: "/".to_string(),
+            },
+            Token {
+                Type: ASTERISK.to_string(),
+                Literal: "*".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "5".to_string(),
+            },
+
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
         ];
 
         for expected in expecteds {
@@ -210,4 +242,5 @@ mod tests {
             assert_eq!(expected, token);
         }
     }
+ 
 }
