@@ -1,6 +1,6 @@
 use monkey_token::{
-    lookup_ident, Token, TokenType, ASSIGN, COMMA, ILLEGAL, INT, LBRACE, LPAREN, RBRACE, RPAREN,
-    SEMICOLON,
+    lookup_ident, Token, TokenType, ASSIGN, ASTERISK, BANG, COMMA, GT, ILLEGAL, INT, LBRACE,
+    LPAREN, LT, MINUS, RBRACE, RPAREN, SEMICOLON, SLASH,
 };
 #[derive(Debug)]
 pub struct Lexer {
@@ -89,6 +89,36 @@ impl Lexer {
             }
             '}' => {
                 token = Self::new_token(RBRACE.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '-' => {
+                token = Self::new_token(MINUS.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '!' => {
+                token = Self::new_token(BANG.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '*' => {
+                token = Self::new_token(ASTERISK.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '/' => {
+                token = Self::new_token(SLASH.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '<' => {
+                token = Self::new_token(LT.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '>' => {
+                token = Self::new_token(GT.to_string(), self.ch.to_string());
                 self.read_char();
                 token
             }

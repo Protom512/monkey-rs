@@ -229,7 +229,31 @@ mod tests {
                 Type: INT.to_string(),
                 Literal: "5".to_string(),
             },
-
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            // 5<10>5;
+            Token {
+                Type: INT.to_string(),
+                Literal: "5".to_string(),
+            },
+            Token {
+                Type: LT.to_string(),
+                Literal: "<".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "10".to_string(),
+            },
+            Token {
+                Type: GT.to_string(),
+                Literal: ">".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "5".to_string(),
+            },
             Token {
                 Type: SEMICOLON.to_string(),
                 Literal: ";".to_string(),
@@ -242,5 +266,4 @@ mod tests {
             assert_eq!(expected, token);
         }
     }
- 
 }
