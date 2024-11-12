@@ -137,6 +137,71 @@ mod tests {
                 Type: RPAREN.to_string(),
                 Literal: ")".to_string(),
             },
+            Token {
+                Type: LBRACE.to_string(),
+                Literal: "{".to_string(),
+            },
+            Token {
+                Type: IDENT.to_string(),
+                Literal: "x".to_string(),
+            },
+            Token {
+                Type: PLUS.to_string(),
+                Literal: "+".to_string(),
+            },
+            Token {
+                Type: IDENT.to_string(),
+                Literal: "y".to_string(),
+            },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            Token {
+                Type: RBRACE.to_string(),
+                Literal: "}".to_string(),
+            },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            // let result=add(five,ten);
+            Token {
+                Type: LET.to_string(),
+                Literal: "let".to_string(),
+            },
+            Token {
+                Type: IDENT.to_string(),
+                Literal: "result".to_string(),
+            },
+            Token {
+                Type: ASSIGN.to_string(),
+                Literal: "=".to_string(),
+            },
+            Token {
+                Type: IDENT.to_string(),
+                Literal: "add".to_string(),
+            },
+            Token {
+                Type: LPAREN.to_string(),
+                Literal: "(".to_string(),
+            },
+            Token {
+                Type: IDENT.to_string(),
+                Literal: "five".to_string(),
+            },
+            Token {
+                Type: COMMA.to_string(),
+                Literal: ",".to_string(),
+            },
+            Token {
+                Type: IDENT.to_string(),
+                Literal: "ten".to_string(),
+            },
+            Token {
+                Type: RPAREN.to_string(),
+                Literal: ")".to_string(),
+            },
         ];
 
         for expected in expecteds {
