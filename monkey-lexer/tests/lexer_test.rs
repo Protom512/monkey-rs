@@ -59,7 +59,15 @@ mod tests {
     
     let result=add(five,ten);
     !-/*5;
-    5<10>5;";
+    5<10>5;
+    if(5<10){
+    return true;
+    } else {
+     return false;
+     }
+     10 == 10;
+     10 != 9;
+    ";
         let mut l = Lexer::new(input.to_string());
         let expecteds: Vec<Token>;
         expecteds = vec![
@@ -253,6 +261,109 @@ mod tests {
             Token {
                 Type: INT.to_string(),
                 Literal: "5".to_string(),
+            },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            // if (5<10){
+            Token {
+                Type: IF.to_string(),
+                Literal: "if".to_string(),
+            },
+            Token {
+                Type: LPAREN.to_string(),
+                Literal: "(".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "5".to_string(),
+            },
+            Token {
+                Type: LT.to_string(),
+                Literal: "<".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "10".to_string(),
+            },
+            Token {
+                Type: RPAREN.to_string(),
+                Literal: ")".to_string(),
+            },
+            Token {
+                Type: LBRACE.to_string(),
+                Literal: "{".to_string(),
+            },
+            Token {
+                Type: RETURN.to_string(),
+                Literal: "return".to_string(),
+            },
+            Token {
+                Type: TRUE.to_string(),
+                Literal: "true".to_string(),
+            },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            Token {
+                Type: RBRACE.to_string(),
+                Literal: "}".to_string(),
+            },
+            Token {
+                Type: ELSE.to_string(),
+                Literal: "else".to_string(),
+            },
+            Token {
+                Type: LBRACE.to_string(),
+                Literal: "{".to_string(),
+            },
+            Token {
+                Type: RETURN.to_string(),
+                Literal: "return".to_string(),
+            },
+            Token {
+                Type: FALSE.to_string(),
+                Literal: "false".to_string(),
+            },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            Token {
+                Type: RBRACE.to_string(),
+                Literal: "}".to_string(),
+            },
+            // 10 == 10;
+            Token {
+                Type: INT.to_string(),
+                Literal: "10".to_string(),
+            },
+            Token {
+                Type: EQ.to_string(),
+                Literal: "==".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "10".to_string(),
+            },
+            Token {
+                Type: SEMICOLON.to_string(),
+                Literal: ";".to_string(),
+            },
+            // 10 != 9;
+            Token {
+                Type: INT.to_string(),
+                Literal: "10".to_string(),
+            },
+            Token {
+                Type: NOT_EQ.to_string(),
+                Literal: "!=".to_string(),
+            },
+            Token {
+                Type: INT.to_string(),
+                Literal: "9".to_string(),
             },
             Token {
                 Type: SEMICOLON.to_string(),
