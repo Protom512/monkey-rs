@@ -1,6 +1,6 @@
 use monkey_token::{
-    lookup_ident, Token, TokenType, ASSIGN, ASTERISK, BANG, COMMA, EQ, GT, ILLEGAL, INT, LBRACE,
-    LPAREN, LT, MINUS, NOT_EQ, RBRACE, RPAREN, SEMICOLON, SLASH,
+    lookup_ident, Token, TokenType, ASSIGN, ASTERISK, BANG, COMMA, EOF, EQ, GT, ILLEGAL, INT,
+    LBRACE, LPAREN, LT, MINUS, NOT_EQ, RBRACE, RPAREN, SEMICOLON, SLASH,
 };
 #[derive(Debug)]
 pub struct Lexer {
@@ -52,6 +52,10 @@ impl Lexer {
         };
         self.skip_whitespace();
         let token = match self.ch {
+            '\0' => {
+                token = Self::new_token(EOF.to_string(), self.ch.to_string());
+                token
+            }
             '=' => {
                 if self.peek_char() == '=' {
                     let ch = self.ch;
@@ -140,7 +144,6 @@ impl Lexer {
                 token
             }
             _ => {
-                dbg!(self.ch);
                 if self.is_letter() {
                     token.Literal = self.read_identifier();
                     token.Type = lookup_ident(&token.Literal);
@@ -151,12 +154,12 @@ impl Lexer {
                     token.Literal = self.read_number();
                     token
                 } else {
+                    dbg!(self.ch);
                     Self::new_token(ILLEGAL.to_string(), self.ch.to_string())
                 }
             }
         };
 
-        dbg!(self.position);
         token
     }
     fn new_token(assign: TokenType, ch: String) -> Token {
@@ -166,6 +169,9 @@ impl Lexer {
         };
     }
 
+    pub fn endofinput(&self) -> bool {
+        (self.input.len() as u8) < self.readPosition
+    }
     ///
     fn is_letter(&self) -> bool {
         self.ch.is_alphabetic() || self.ch == '_'
@@ -176,13 +182,12 @@ impl Lexer {
             self.read_char(); // 次の文字を読み込む
         }
         let identifier = &self.input[start_pos as usize..self.position as usize];
-        dbg!(self.position);
         identifier.to_string() // 文字列を返す
     }
 
     /// スペースであるかぎりスキップする
     fn skip_whitespace(&mut self) -> () {
-        while self.ch == ' ' || self.ch == '\t' || self.ch == '\n' {
+        while self.ch == ' ' || self.ch == '\t' || self.ch == '\n' || self.ch == '\r' {
             self.read_char();
         }
     }
@@ -197,7 +202,7 @@ impl Lexer {
             self.read_char(); // 次の文字を読み込む
         }
         let identifier = &self.input[start_pos as usize..self.position as usize];
-        dbg!(self.position);
+
         identifier.to_string() // 文字列を返す
     }
 

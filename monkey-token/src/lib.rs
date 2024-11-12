@@ -46,7 +46,6 @@ pub struct Token {
 }
 use std::collections::HashMap;
 pub fn lookup_ident(ident: &str) -> TokenType {
-    dbg!(ident);
     let mut map = HashMap::new();
     map.insert("fn", FUNCTION);
     map.insert("let", LET);
