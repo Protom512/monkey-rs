@@ -1,6 +1,6 @@
 use monkey_token::{
-    lookup_ident, Token, TokenType, ASSIGN, COMMA, ILLEGAL, INT, LBRACE, LPAREN, RBRACE, RPAREN,
-    SEMICOLON,
+    lookup_ident, Token, TokenType, ASSIGN, ASTERISK, BANG, COMMA, EQ, GT, ILLEGAL, INT, LBRACE,
+    LPAREN, LT, MINUS, NOT_EQ, RBRACE, RPAREN, SEMICOLON, SLASH,
 };
 #[derive(Debug)]
 pub struct Lexer {
@@ -53,8 +53,16 @@ impl Lexer {
         self.skip_whitespace();
         let token = match self.ch {
             '=' => {
-                token = Self::new_token(ASSIGN.to_owned(), self.ch.to_string());
+                if self.peek_char() == '=' {
+                    let ch = self.ch;
+                    self.read_char();
+                    let literal = format!("{}{}", ch, self.ch);
+                    token = Self::new_token(EQ.to_string(), literal)
+                } else {
+                    token = Self::new_token(ASSIGN.to_string(), self.ch.to_string());
+                }
                 self.read_char();
+
                 token
             }
             ';' => {
@@ -89,6 +97,45 @@ impl Lexer {
             }
             '}' => {
                 token = Self::new_token(RBRACE.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '-' => {
+                token = Self::new_token(MINUS.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '!' => {
+                if self.peek_char() == '=' {
+                    let ch = self.ch;
+                    self.read_char();
+                    let literal = format!("{}{}", ch, self.ch);
+                    token = Self::new_token(NOT_EQ.to_string(), literal)
+                } else {
+                    token = Self::new_token(BANG.to_string(), self.ch.to_string());
+                }
+                self.read_char();
+                token
+            }
+            '*' => {
+                token = Self::new_token(ASTERISK.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '/' => {
+                token = Self::new_token(SLASH.to_string(), self.ch.to_string());
+
+                self.read_char();
+
+                token
+            }
+            '<' => {
+                token = Self::new_token(LT.to_string(), self.ch.to_string());
+                self.read_char();
+                token
+            }
+            '>' => {
+                token = Self::new_token(GT.to_string(), self.ch.to_string());
                 self.read_char();
                 token
             }
@@ -152,5 +199,21 @@ impl Lexer {
         let identifier = &self.input[start_pos as usize..self.position as usize];
         dbg!(self.position);
         identifier.to_string() // 文字列を返す
+    }
+
+    /// Returns the peek char of this [`Lexer`].
+    fn peek_char(&mut self) -> char {
+        if self.readPosition >= self.input.len() as u8 {
+            return '\0';
+        } else {
+            let _char_at_nth = match self.input.chars().nth(self.readPosition.into()) {
+                Some(n) => return n,
+                None => {
+                    dbg!(&self);
+                    return '\0';
+                }
+            };
+            // [self.readPosition]
+        }
     }
 }
